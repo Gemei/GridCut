@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GridCut — Print large from any printer</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23111'/%3E%3Cpath d='M6 6h9v9H6zm11 0h9v9h-9zM6 17h9v9H6zm11 0h9v9h-9z' fill='none' stroke='%23f4c430' stroke-width='1.6'/%3E%3C/svg%3E" />
+  <style>
+    :root {
+      --bg: #101114;
+      --panel: #181a1f;
+      --line: #2c3038;
+      --text: #eceae4;
+      --muted: #9a968c;
+      --gold: #e2b340;
+      --gold-ink: #1a1406;
+      font-family: "Segoe UI", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text); min-height: 100vh; }
+    a { color: inherit; }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.9rem 1.4rem;
+    }
+    .brand { display: flex; gap: 0.7rem; align-items: center; text-decoration: none; }
+    .brand strong { letter-spacing: 0.04em; }
+    .mark {
+      width: 28px; height: 28px; border-radius: 6px;
+      background:
+        linear-gradient(var(--gold), var(--gold)) 4px 4px / 9px 9px no-repeat,
+        linear-gradient(var(--gold), var(--gold)) 15px 4px / 9px 9px no-repeat,
+        linear-gradient(var(--gold), var(--gold)) 4px 15px / 9px 9px no-repeat,
+        linear-gradient(var(--gold), var(--gold)) 15px 15px / 9px 9px no-repeat,
+        #111;
+    }
+    .cta {
+      display: inline-block;
+      text-decoration: none;
+      border-radius: 8px;
+      padding: 0.65rem 1rem;
+      font-weight: 650;
+      background: var(--gold);
+      color: var(--gold-ink);
+    }
+    main { max-width: 720px; margin: 0 auto; padding: 3.5rem 1.4rem 4rem; }
+    h1 { font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.1; margin: 0 0 1.6rem; font-weight: 650; }
+    ol { list-style: none; margin: 0 0 1.8rem; padding: 0; display: grid; gap: 0.7rem; }
+    li {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 0.85rem 1rem;
+      color: var(--muted);
+    }
+    li strong { color: var(--text); display: block; margin-bottom: 0.15rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="brand" href="index.html">
+      <span class="mark" aria-hidden="true"></span>
+      <strong>GridCut</strong>
+    </a>
+    <a class="cta" href="app.html">Start printing</a>
+  </header>
+
+  <main>
+    <h1>Print a large picture on a home printer.</h1>
+    <ol>
+      <li><strong>1. Add an image</strong> Drop, paste, or choose a file.</li>
+      <li><strong>2. Set the size</strong> Enter the width and height, then pick your paper.</li>
+      <li><strong>3. Print the PDF</strong> Print at 100% actual size, trim the marks, and tape the pages together.</li>
+    </ol>
+    <a class="cta" href="app.html">Start printing</a>
+  </main>
+</body>
+</html>
