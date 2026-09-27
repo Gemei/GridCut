@@ -6,7 +6,9 @@ Everything runs in the browser. Images are not uploaded.
 
 ## Use it
 
-Open `index.html` for the introduction, then **Start printing** (`app.html`).
+Try it in the browser: [grid-cut.netlify.app](https://grid-cut.netlify.app)
+
+Or open `index.html` locally, then **Start printing** (`app.html`).
 
 1. Drop, paste, or choose an image (PNG, JPG, WebP, GIF, BMP, or SVG).
 2. Set the finished width and height in centimeters or inches, or mark two points and enter the real distance between them.
