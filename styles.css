@@ -16,6 +16,7 @@ body {
   background: var(--bg);
   color: var(--text);
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
 }
 button, input, select { font: inherit; color: inherit; }
@@ -25,9 +26,12 @@ button, input, select { font: inherit; color: inherit; }
   gap: 1rem;
   height: 58px;
   padding: 0 1rem;
+  padding-top: env(safe-area-inset-top);
+  height: calc(58px + env(safe-area-inset-top));
   border-bottom: 1px solid var(--line);
   background: #14161a;
 }
+.phone-nav { display: none; }
 .brand { display: flex; gap: 0.7rem; align-items: center; min-width: 0; color: inherit; text-decoration: none; }
 .brand strong { display: block; letter-spacing: 0.04em; }
 .brand span { color: var(--muted); font-size: 0.78rem; white-space: nowrap; }
@@ -69,7 +73,7 @@ button.ghost.on { background: #2a2414; border-color: var(--gold); color: var(--g
 main {
   display: grid;
   grid-template-columns: 340px 1fr;
-  height: calc(100vh - 58px);
+  height: calc(100dvh - 58px - env(safe-area-inset-top));
   min-height: 0;
 }
 #controls {
@@ -120,6 +124,7 @@ input[type="number"], select {
   padding: 0.45rem 0.55rem;
   color: var(--text);
   width: 100%;
+  font-size: 16px;
 }
 input[type="number"]:focus, select:focus, button:focus-visible {
   outline: 2px solid rgba(226, 179, 64, 0.55);
@@ -287,10 +292,80 @@ dialog {
 }
 dialog::backdrop { background: rgba(0,0,0,0.55); }
 dialog h3 { margin: 0 0 0.4rem; }
-@media (max-width: 860px) {
-  .hint, .brand span { display: none; }
-  main { grid-template-columns: 1fr; grid-template-rows: minmax(180px, 42vh) 1fr; }
-  #controls { border-right: 0; border-bottom: 1px solid var(--line); }
-  .stage { min-height: 0; }
-  .guide-card { width: 150px; padding: 0.4rem; }
+body.is-phone {
+  padding-bottom: env(safe-area-inset-bottom);
 }
+body.is-phone .hint,
+body.is-phone .brand span { display: none; }
+body.is-phone .phone-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+  padding: 0.45rem 0.6rem;
+  border-bottom: 1px solid var(--line);
+  background: #14161a;
+}
+body.is-phone .phone-nav button {
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--text);
+  border-radius: 8px;
+  padding: 0.55rem 0.4rem;
+  font: inherit;
+}
+body.is-phone .phone-nav button.on {
+  background: var(--gold);
+  color: var(--gold-ink);
+  border-color: transparent;
+  font-weight: 650;
+}
+body.is-phone main {
+  display: block;
+  height: auto;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+body.is-phone {
+  display: flex;
+  flex-direction: column;
+}
+body.is-phone main,
+body.is-phone #controls,
+body.is-phone .stage {
+  min-height: 0;
+}
+body.is-phone #controls,
+body.is-phone .stage {
+  height: 100%;
+  overflow: auto;
+}
+body.is-phone.view-pages #controls { display: none; }
+body.is-phone:not(.view-pages) .stage { display: none; }
+body.is-phone #controls { border-right: 0; }
+body.is-phone .stage-body { flex-direction: column; align-items: stretch; }
+body.is-phone .guide-card {
+  width: auto;
+  max-height: none;
+  border-left: 0;
+  border-top: 1px solid var(--line);
+  padding: 0.6rem 0.75rem 1rem;
+}
+body.is-phone #preview-wrap {
+  padding: 0.4rem;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+body.is-phone .preview-col { width: 100%; align-items: stretch; }
+body.is-phone .sheet { width: 100%; justify-content: center; }
+body.is-phone .stage-bar {
+  display: block;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  padding: 0.4rem 0.7rem;
+}
+body.is-phone .stage-bar span { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+body.is-phone button.ghost,
+body.is-phone button.primary { min-height: 42px; }
+body.is-phone dialog { max-width: calc(100vw - 1.5rem); }

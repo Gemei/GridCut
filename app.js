@@ -8,6 +8,29 @@ const PAPERS = {
 
 const $ = (id) => document.getElementById(id);
 
+function phoneNow() {
+  const shortScreen = Math.min(screen.width, screen.height);
+  const uaPhone = /iPhone|iPod|Android.+Mobile|Mobile|Windows Phone/i.test(navigator.userAgent || "");
+  return uaPhone || shortScreen <= 500 || window.innerWidth <= 760;
+}
+function applyPhone() {
+  document.body.classList.toggle("is-phone", phoneNow());
+}
+applyPhone();
+window.addEventListener("resize", () => {
+  applyPhone();
+  if (state.image && !state.tool) renderPages();
+});
+window.addEventListener("orientationchange", applyPhone);
+
+function showPhoneView(pages) {
+  document.body.classList.toggle("view-pages", pages);
+  $("tab-setup").classList.toggle("on", !pages);
+  $("tab-pages").classList.toggle("on", pages);
+}
+$("tab-setup").onclick = () => showPhoneView(false);
+$("tab-pages").onclick = () => showPhoneView(true);
+
 const state = {
   image: null,
   base: null,
@@ -72,6 +95,7 @@ function loadFile(file) {
     state.aspect = img.naturalWidth / img.naturalHeight;
     syncFromAspect("width");
     $("download").disabled = false;
+    if (document.body.classList.contains("is-phone")) showPhoneView(true);
     render();
   };
   img.onerror = () => setStatus("Could not read that image.", true);
@@ -623,8 +647,21 @@ function renderPages() {
   const showNumbers = $("numbers").checked;
   const showGuide = $("guide").checked;
   sheet.style.gridTemplateColumns = `repeat(${layout.cols}, auto)`;
-  const pagePx = Math.min(220, Math.max(90, Math.floor(860 / layout.cols)));
+  const phone = document.body.classList.contains("is-phone");
+  const gap = phone ? 6 : 10;
+  const box = $("preview-wrap");
+  const wrap = Math.max(160, box.clientWidth - (phone ? 16 : 48));
+  const fitted = Math.floor((wrap - gap * (layout.cols - 1)) / layout.cols);
+  let pagePx = Math.min(220, Math.max(90, fitted));
+  if (phone) {
+    const availW = Math.max(120, box.clientWidth - 12);
+    const availH = Math.max(160, box.clientHeight - 12);
+    const byW = (availW - gap * (layout.cols - 1)) / layout.cols;
+    const byH = ((availH - gap * (layout.rows - 1)) / layout.rows) * (layout.pw / layout.ph);
+    pagePx = Math.max(24, Math.floor(Math.min(byW, byH)));
+  }
   const pageScale = pagePx / layout.pw;
+  sheet.style.gap = gap + "px";
   sheet.innerHTML = "";
 
   let pageIndex = 0;
@@ -668,8 +705,8 @@ function renderPages() {
       marks.height = Math.round(layout.ph * pageScale * 2);
       marks.style.cssText = "position:absolute;inset:0;width:100%;height:100%;pointer-events:none;";
       paintMarks(marks.getContext("2d"), layout, tile, ox, oyTop, marks.width, marks.height, {
-        crops: showCrops,
-        regs: showRegs,
+        crops: showCrops && !phone,
+        regs: showRegs && !phone,
         numbers: showNumbers,
         label: off ? "" : `${pageIndex}/${total}`,
       });
@@ -689,7 +726,7 @@ function renderPages() {
     }
   }
   drawMeasureDots(sheet, layout, pageScale, layout);
-  paintGuideCard(layout, showGuide);
+  paintGuideCard(layout, showGuide && !phone);
 
   const pages = layout.cols * layout.rows - state.excluded.size;
   const u = unitLabel();
